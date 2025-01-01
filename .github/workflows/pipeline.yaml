@@ -27,7 +27,7 @@ jobs:
       - name: Test with pytest
         run: |
           pip install pytest pytest-cov
-          pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+          pytest test/ --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
       - name: Check code formatting with Ruff
         run: ruff format --diff --target-version=py39
         continue-on-error: true
