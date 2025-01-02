@@ -20,21 +20,14 @@ from src.utils.data_storage import upload_current_data_to_daily_files
 logger = Logger()
 
 # ALCHEMY_URL = os.getenv("ALCHEMY_URL")
-# POOL_ADDRESSES_PROVIDER_MAINNET = os.getenv("POOL_ADDRESSES_PROVIDER_MAINNET")
 # AWS_ACCESS_KEY = os.getenv("AWS_ACCESS_KEY")
 # AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
-# AWS_SESSION_TOKEN = os.getenv("AWS_SESSION_TOKEN")
 
 ALCHEMY_URL = os.environ["ALCHEMY_URL"]
 AWS_ACCESS_KEY = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
 POOL_ADDRESSES_PROVIDER_MAINNET = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e"
 
-for name, value in os.environ.items():
-    print(name, " - ", value)
-
-logger.log(f"key = {AWS_ACCESS_KEY}")
-logger.log(f"sec = {AWS_SECRET_KEY}")
 
 client_s3 = boto3.client(
     "s3",

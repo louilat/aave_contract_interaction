@@ -3,3 +3,5 @@ env/*
 devenv/*
 *.ipynb
 *.pyc
+deployment/*
+.vscode/
