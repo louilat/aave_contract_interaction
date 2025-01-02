@@ -28,7 +28,6 @@ logger = Logger()
 ALCHEMY_URL = os.environ["ALCHEMY_URL"]
 AWS_ACCESS_KEY = os.environ["AWS_ACCESS_KEY_ID"]
 AWS_SECRET_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-AWS_SESSION_TOKEN = os.environ["AWS_SESSION_TOKEN"]
 POOL_ADDRESSES_PROVIDER_MAINNET = "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e"
 
 for name, value in os.environ.items():
@@ -36,14 +35,12 @@ for name, value in os.environ.items():
 
 logger.log(f"key = {AWS_ACCESS_KEY}")
 logger.log(f"sec = {AWS_SECRET_KEY}")
-logger.log(f"tok = {AWS_SESSION_TOKEN}")
 
 client_s3 = boto3.client(
     "s3",
     endpoint_url="https://" + "minio.lab.sspcloud.fr",
     aws_access_key_id=AWS_ACCESS_KEY,
     aws_secret_access_key=AWS_SECRET_KEY,
-    aws_session_token=AWS_SESSION_TOKEN,
 )
 
 logger.log("****Starting reserves' data ETL****")
