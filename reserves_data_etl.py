@@ -102,4 +102,6 @@ upload_current_data_to_daily_files(
     logger=logger,
 )
 
+client_s3.close()
+
 logger.log("      Done!")
