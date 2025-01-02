@@ -34,6 +34,8 @@ def get_reserves_data_from_contract(
     w3 = Web3(Web3.HTTPProvider(api_url))
     if w3.is_connected():
         logger.log("Successfully connected to the API")
+    else:
+        raise Exception("Cannot connect to the API")
 
     contract = w3.eth.contract(
         address="0x3F78BBD206e4D3c504Eb854232EdA7e47E9Fd8FC",
