@@ -108,6 +108,7 @@ def transform_reserves_base_data(
         DataFrame: The dataset with the current base values for each reserve
     """
     base_columns_list = [
+        "name",
         "liquidityIndex",
         "variableBorrowIndex",
         "liquidityRate",
@@ -139,7 +140,7 @@ def transform_reserves_base_data(
         "virtualUnderlyingBalance",
     ]
 
-    reserves_base_list = [data[12:] for data in reserves_data]
+    reserves_base_list = [tuple([data[1]]) + data[12:] for data in reserves_data]
     reserves_base = DataFrame(reserves_base_list, columns=base_columns_list)
     reserves_base["query_timestamp"] = current_timestamp
     return reserves_base

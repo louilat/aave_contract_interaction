@@ -483,6 +483,7 @@ def test_transform_base_data(reserves_data):
 
     assert len(configuration_data) == 10
     assert configuration_data.columns.tolist() == [
+        "name",
         "liquidityIndex",
         "variableBorrowIndex",
         "liquidityRate",
