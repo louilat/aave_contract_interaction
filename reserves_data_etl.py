@@ -12,6 +12,7 @@ from src.reserves_data.reserves_data_functions import (
     get_reserves_data_from_contract,
     transform_reserves_base_data,
     transform_reserves_configuration_data,
+    transform_base_currency_info,
 )
 
 from src.utils.logger import Logger
@@ -50,7 +51,7 @@ logger.log(
     "   [STEP 1] - Extracting current reserves info from UiPoolDataProvider smart contract..."
 )
 
-_, reserves_data, _ = get_reserves_data_from_contract(
+reserves_data, base_currency_info = get_reserves_data_from_contract(
     api_url=ALCHEMY_URL,
     abi=contract_abi,
     pool_addresses_provider=POOL_ADDRESSES_PROVIDER_MAINNET,
@@ -71,7 +72,14 @@ current_base_data = transform_reserves_base_data(
     reserves_data=reserves_data,
 )
 
-logger.log("   [STEP 4] - Saving outputs to s3...")
+logger.log("   [STEP 4] - Creating the base currency info dataset...")
+
+current_base_currency_data = transform_base_currency_info(
+    current_timestamp=current_timestamp,
+    base_currency_info=base_currency_info,
+)
+
+logger.log("   [STEP 5] - Saving outputs to s3...")
 
 now_date_str = now.strftime("%Y-%m-%d")
 
@@ -88,13 +96,23 @@ upload_current_data_to_daily_files(
 logger.log("      --> Base data...")
 
 upload_current_data_to_daily_files(
-    current_data=current_configuration_data,
+    current_data=current_base_data,
     bucket="llatournerie",
     key=f"aaveV3-live-data/base/reserve_base_{now_date_str}.csv",
     client_s3=client_s3,
     logger=logger,
 )
 
+logger.log("      --> Base currency info...")
+
+upload_current_data_to_daily_files(
+    current_data=current_base_currency_data,
+    bucket="llatournerie",
+    key=f"aaveV3-live-data/base-currency/base_currency_info_{now_date_str}.csv",
+    client_s3=client_s3,
+    logger=logger,
+)
+
 client_s3.close()
 
-logger.log("      Done!")
+logger.log("Done!")

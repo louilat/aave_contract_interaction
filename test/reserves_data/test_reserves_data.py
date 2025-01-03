@@ -5,6 +5,7 @@ import numpy as np
 from ...src.reserves_data.reserves_data_functions import (
     transform_reserves_base_data,
     transform_reserves_configuration_data,
+    transform_base_currency_info,
 )
 
 
@@ -445,6 +446,11 @@ def reserves_data():
     return reserves_data_list
 
 
+@pytest.fixture
+def base_currency_info():
+    return 100000000, 100000000, 345648000000, 8
+
+
 def test_transform_configuration_data(reserves_data):
     configuration_data = transform_reserves_configuration_data(2014.0718, reserves_data)
 
@@ -514,3 +520,17 @@ def test_transform_base_data(reserves_data):
         == np.max(configuration_data.query_timestamp)
         == 2014.0718
     )
+
+
+def test_transform_base_currency_info(base_currency_info):
+    base_currency = transform_base_currency_info(2014.0718, base_currency_info)
+
+    assert len(base_currency) == 1
+
+    assert base_currency.columns.tolist() == [
+        "marketReferenceCurrencyUnit",
+        "marketReferenceCurrencyPriceInUsd",
+        "networkBaseTokenPriceInUsd",
+        "networkBaseTokenPriceDecimals",
+        "query_timestamp",
+    ]

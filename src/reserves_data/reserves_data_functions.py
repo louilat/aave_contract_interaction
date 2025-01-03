@@ -42,10 +42,10 @@ def get_reserves_data_from_contract(
         abi=abi,
     )
 
-    # function getReservesList(IPoolAddressesProvider provider) public view override returns (address[] memory)
-    logger.log("   --> Extracting reserves list...")
-    reserves_list = contract.functions.getReservesList(pool_addresses_provider).call()
-    logger.log("       Done !")
+    # # function getReservesList(IPoolAddressesProvider provider) public view override returns (address[] memory)
+    # logger.log("   --> Extracting reserves list...")
+    # reserves_list = contract.functions.getReservesList(pool_addresses_provider).call()
+    # logger.log("       Done !")
 
     # function getReservesData(IPoolAddressesProvider provider) public view override returns (AggregatedReserveData[] memory, BaseCurrencyInfo memory)
     logger.log("   --> Extracting reserves data...")
@@ -53,7 +53,7 @@ def get_reserves_data_from_contract(
         pool_addresses_provider
     ).call()
     logger.log("       Done !")
-    return reserves_list, reserves_data, base_currency_info
+    return reserves_data, base_currency_info
 
 
 def transform_reserves_configuration_data(
@@ -143,3 +143,17 @@ def transform_reserves_base_data(
     reserves_base = DataFrame(reserves_base_list, columns=base_columns_list)
     reserves_base["query_timestamp"] = current_timestamp
     return reserves_base
+
+
+def transform_base_currency_info(
+    current_timestamp: float, base_currency_info: tuple
+) -> DataFrame:
+    base_currency_columns = [
+        "marketReferenceCurrencyUnit",
+        "marketReferenceCurrencyPriceInUsd",
+        "networkBaseTokenPriceInUsd",
+        "networkBaseTokenPriceDecimals",
+    ]
+    base_currency = DataFrame([base_currency_info], columns=base_currency_columns)
+    base_currency["query_timestamp"] = current_timestamp
+    return base_currency
